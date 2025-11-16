@@ -1,22 +1,22 @@
-require("dotenv").config({path: "../../.env"});
 const oracleDB = require("oracledb");
 
-async function getConnection() {
+async function getConnection(username, password) {
     try {
         oracleDB.initOracleClient();
 
         const conn = await oracleDB.getConnection({
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
+            user: username,
+            password: password,
             connectString: "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=oracle.scs.ryerson.ca)(Port=1521))(CONNECT_DATA=(SID=orcl)))"
         });
-
+        
         console.log("Connected to Oracle 11g!");
 
         await conn.close();
+        return { success: true };
     } catch (err) {
-        console.error("Connection error:", err);
+        return { success: false, error: err.message };
     }
 }
 
-getConnection();
+module.exports = getConnection;
