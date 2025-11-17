@@ -1,20 +1,18 @@
 import './App.css'
-import Login from './components/Login'
-import { login } from './api/auth'
+import Navbar from './components/Navbar';
+import { useAuth } from './context/AuthContext'
 
 function App() {
-  const onLogin = async (username: string, password: string) => {
-    try {
-      const user = await login(username, password);
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const { user, logout } = useAuth();
 
   return (
     <>
-      <div className='container d-flex justify-content-center align-items-center vh-100'>
-        <Login onLogin={onLogin}/>
+      <Navbar />
+      <div className='container d-flex justify-content-center align-items-center'>
+        <p>hello world</p>
+        <p>you are {user?.username}</p>
+        <p>haha ur pass is {user?.password}</p>
+        <button onClick={logout}></button>
       </div>
     </>
   )
