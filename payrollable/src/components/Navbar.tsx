@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -9,19 +11,19 @@ export default function Navbar() {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Drop Tables</a>
+                    <Link className="nav-link" to="/homepage/db/drop">Drop Tables</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Create Tables</a>
+                    <Link className="nav-link" to="/homepage/db/create">Create Tables</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Populate Tables</a>
+                    <Link className="nav-link" to="/homepage/db/populate">Populate Tables</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Simple Query Tables</a>
+                    <Link className="nav-link" to="/homepage/simple">Simple Query Tables</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Advanced Query Tables</a>
+                    <Link className="nav-link" to="/homepage/advanced">Advanced Query Tables</Link>
                 </li>
                 {/* <li className="nav-item">
                     <a className="nav-link disabled" aria-disabled="true">Disabled</a>
