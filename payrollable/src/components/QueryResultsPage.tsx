@@ -5,6 +5,14 @@ export default function QueryResultsPage() {
   const { queryId } = useParams();
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredData = data.filter(row =>
+    Object.values(row)
+      .some(value =>
+        String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      )
+  );
 
   const dummyData: Record<string, any[]> = {
     "1": [
@@ -61,6 +69,16 @@ export default function QueryResultsPage() {
         <p className="text-danger">No results found.</p>
       )}
 
+      <div className="mb-3">
+        <input 
+          type="text" 
+          className="form-control"
+          placeholder="Search results..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       {!loading && data.length > 0 && (
         <div className="table-responsive mt-3">
           <table className="table table-striped table-hover align-middle">
@@ -75,7 +93,7 @@ export default function QueryResultsPage() {
             </thead>
 
             <tbody>
-              {data.map((row, i) => (
+              {filteredData.map((row, i) => (
                 <tr key={i}>
                   {Object.values(row).map((value, j) => (
                     <td key={j}>{String(value)}</td>

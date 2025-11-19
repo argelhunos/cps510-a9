@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute.tsx';
 import DBActionPage from './components/DBActionPage.tsx';
 import SimpleQueryPage from './components/SimpleQueryPage.tsx';
 import QueryResultsPage from './components/QueryResultsPage.tsx';
+import AdvancedQueryPage from './components/AdvancedQueryPage.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -37,7 +38,7 @@ createRoot(document.getElementById('root')!).render(
             />
             <Route 
               path="advanced" 
-              element={<></>}
+              element={<AdvancedQueryPage />}
             />
             <Route 
               path="query/:queryId"
