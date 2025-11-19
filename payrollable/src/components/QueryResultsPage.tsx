@@ -6,30 +6,40 @@ export default function QueryResultsPage() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const dummyData = [
-    {
-      DEPARTMENTID: 1,
-      DEPARTMENTNAME: "Human Resources",
-      NUMBEROFEMPLOYEES: 12
-    },
-    {
-      DEPARTMENTID: 2,
-      DEPARTMENTNAME: "Finance",
-      NUMBEROFEMPLOYEES: 18
-    },
-    {
-      DEPARTMENTID: 3,
-      DEPARTMENTNAME: "Engineering",
-      NUMBEROFEMPLOYEES: 45
-    }
-  ];
+  const dummyData: Record<string, any[]> = {
+    "1": [
+      { DeductionType: "Tax" },
+      { DeductionType: "Insurance" },
+      { DeductionType: "Retirement" },
+    ],
+    "2": [
+      {
+        EmployeeID: 101,
+        FirstName: "Alice",
+        LastName: "Smith",
+        Email: "alice.smith@example.com",
+        HourlyRate: 25
+      },
+      {
+        EmployeeID: 102,
+        FirstName: "Bob",
+        LastName: "Jones",
+        Email: "bob.jones@example.com",
+        HourlyRate: 30
+      }
+    ],
+    "3": [
+      { EmployeeID: 201, FirstName: "Carol", LastName: "Miller", IsManager: "Yes" },
+      { EmployeeID: 202, FirstName: "David", LastName: "Lee", IsManager: "Yes" }
+    ]
+  };
 
   useEffect(() => {
     // fake waiting for backend
     setLoading(true);
 
     const timer = setTimeout(() => {
-      setData(dummyData);
+      setData(dummyData[queryId!] || []);
       setLoading(false);
     }, 500);
 

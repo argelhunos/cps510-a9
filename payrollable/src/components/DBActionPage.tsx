@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Dialog from "./Dialog";
 
 type ActionInfo = {
@@ -70,7 +70,11 @@ export default function DBActionPage() {
   const { action } = useParams();
   const actionInfo = getActionInfo(action);
   const [result, setResult] = useState<string | null>(null);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setResult(null);
+  }, [action])
 
   if (!actionInfo) {
     return <h2>Invalid action: {action}</h2>;
@@ -78,23 +82,27 @@ export default function DBActionPage() {
 
   async function handleConfirm() {
     try {
-      // setLoading(true);
+      setLoading(true);
 
-      const res = await fetch(actionInfo!.endpoint, { method: "POST" });
-      const json = await res.json();
+      // const res = await fetch(actionInfo!.endpoint, { method: "POST" });
+      // const json = await res.json();
 
-      setResult(JSON.stringify(json, null, 2));
+      // setResult(JSON.stringify(json, null, 2));
+
+
+      // to mimic waiting for endpoint
+      setResult("Completed successfully.");
     } catch (err) {
       setResult("Error contacting server.");
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }
 
   return (
     <div className="container mt-4">
       {result == null && <Dialog title={actionInfo.title} body={actionInfo.body} onConfirm={handleConfirm}/>}
-      {result != null && <p>a result goes here</p>}
+      {result != null && <p>{result}</p>}
     </div>
   );
 }
