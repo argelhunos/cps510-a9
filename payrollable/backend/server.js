@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const auth = require("./src/routes/auth");
+const adminRouter = require('./src/routes/admin');
 
 const app = express();
 
@@ -8,6 +9,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/auth", auth);
+
+app.use('/admin', adminRouter);
 
 const db = require("./src/db");
 app.use(db.attachGetDb());

@@ -1,0 +1,14 @@
+### Login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "f4nguyen",
+  "password": "04258245"
+}
+
+### Refresh Database
+POST http://localhost:3000/admin/refresh
+Content-Type: application/json
+
+{}

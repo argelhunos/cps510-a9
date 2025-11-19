@@ -1,21 +1,38 @@
 const express = require('express');
 const oracledb = require('oracledb');
+const fs = require("fs");
 const router = express.Router();
+
+
+
+function splitSQL(script) {
+    return script
+    .replace(/\r\n/g, "\n")
+    .split(";")
+    .map(s => s.trim())
+    .filter(s => s.length > 0);
+}
 
 /**
  * POST /admin/refresh
- * Body: { sqls?: [string] }
- * If sqls omitted, runs a default drop/create for example tables.
- */
+ * Runs the refresh.sql file.
+*/
 router.post('/refresh', async (req, res) => {
   try {
-    const sqls = req.body?.sqls || [
-      // DO NOT USE THIS YET, NOT READY, I'M TRYNA FIX
-    ];
-    for (const sql of sqls) {
-      await req.db.runSql(sql, [], { autoCommit: true });
+    const script = fs.readFileSync("./refresh.sql", "utf8");
+
+    const statements = splitSQL(script);
+
+    for (const stmt of statements) {
+      try {
+        await req.db.runSql(stmt, [], { autoCommit: true });
+      } catch (err) {
+        console.error("SQL FAILED:", stmt);
+        throw err;
+      }
     }
-    res.json({ success: true });
+
+    res.json({ success: true, ran: statements.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -23,16 +40,24 @@ router.post('/refresh', async (req, res) => {
 
 /**
  * POST /admin/drop-table
- * Body: { table: "TABLE_NAME" }
- * HAVENT TESTED THIS YET, TRYING TO FIX REFRESH FIRST
+ * Body: {}
  */
-router.post('/drop-table', async (req, res) => {
-  const { table } = req.body;
-  if (!table) return res.status(400).json({ error: 'table required' });
+router.post('/drop-tables', async (req, res) => {
   try {
-    const sql = `BEGIN EXECUTE IMMEDIATE 'DROP TABLE "${table}" PURGE'; EXCEPTION WHEN OTHERS THEN IF SQLCODE != -942 THEN RAISE; END IF; END;`;
-    await req.db.runSql(sql, [], { autoCommit: true });
-    res.json({ success: true });
+    const script = fs.readFileSync("./drop.sql", "utf8");
+
+    const statements = splitSQL(script);
+
+    for (const stmt of statements) {
+      try {
+        await req.db.runSql(stmt, [], { autoCommit: true });
+      } catch (err) {
+        console.error("SQL FAILED:", stmt);
+        throw err;
+      }
+    }
+
+    res.json({ success: true, ran: statements.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -40,14 +65,24 @@ router.post('/drop-table', async (req, res) => {
 
 /**
  * POST /admin/create-table
- * Body: { ddl: "CREATE TABLE ... " }
+ * Body: {}
  */
-router.post('/create-table', async (req, res) => {
-  const { ddl } = req.body;
-  if (!ddl) return res.status(400).json({ error: 'ddl required' });
+router.post('/create-tables', async (req, res) => {
   try {
-    await req.db.runSql(ddl, [], { autoCommit: true });
-    res.json({ success: true });
+    const script = fs.readFileSync("./create.sql", "utf8");
+
+    const statements = splitSQL(script);
+
+    for (const stmt of statements) {
+      try {
+        await req.db.runSql(stmt, [], { autoCommit: true });
+      } catch (err) {
+        console.error("SQL FAILED:", stmt);
+        throw err;
+      }
+    }
+
+    res.json({ success: true, ran: statements.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -55,26 +90,24 @@ router.post('/create-table', async (req, res) => {
 
 /**
  * POST /admin/populate-table
- * Body: { table: "name", rows: [{col: val}, ...] }
+ * Body: {}
  */
 router.post('/populate-table', async (req, res) => {
-  const { table, rows, sqls } = req.body;
   try {
-    if (Array.isArray(sqls)) {
-      for (const s of sqls) await req.db.runSql(s, [], { autoCommit: true });
-      return res.json({ success: true });
-    }
-    if (!table || !Array.isArray(rows)) return res.status(400).json({ error: 'table and rows required' });
-    for (const row of rows) {
-      const cols = Object.keys(row).map(c => `"${c}"`).join(',');
-      const binds = Object.values(row);
-      const placeholders = binds.map((_, i) => `:${i + 1}`).join(',');
-      const sql = `INSERT INTO "${table}" (${cols}) VALUES (${placeholders})`;
-      await req.db.runSql(sql, binds, { autoCommit: false });
+    const script = fs.readFileSync("./populate.sql", "utf8");
+
+    const statements = splitSQL(script);
+
+    for (const stmt of statements) {
+      try {
+        await req.db.runSql(stmt, [], { autoCommit: true });
+      } catch (err) {
+        console.error("SQL FAILED:", stmt);
+        throw err;
+      }
     }
 
-    await req.db.runSql('COMMIT', [], { autoCommit: true });
-    res.json({ success: true });
+    res.json({ success: true, ran: statements.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -82,14 +115,35 @@ router.post('/populate-table', async (req, res) => {
 
 /**
  * POST /admin/query
- * Body: { sql: "SELECT ... " }
- */
+ * Body: { choice: "1" }
+*/
 router.post('/query', async (req, res) => {
-  const { sql } = req.body;
-  if (!sql) return res.status(400).json({ error: 'sql required' });
   try {
-    const result = await req.db.runSql({ sql, options: { outFormat: oracledb.OUT_FORMAT_OBJECT } });
-    res.json({ rows: result.rows || [], meta: result.metaData || [] });
+    const { choice } = req.body;
+
+    if (!/^[a-zA-Z0-9_-]+$/.test(choice)) {
+      return res.status(400).json({ error: "Invalid choice" });
+    }
+    const filePath = path.join(__dirname, `./queries/query${choice}.sql`);
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ error: "SQL file not found" });
+    }
+
+    const script = fs.readFileSync(filePath, "utf8");
+
+    const statements = splitSQL(script);
+
+    for (const stmt of statements) {
+      try {
+        await req.db.runSql(stmt, [], { autoCommit: true });
+      } catch (err) {
+        console.error("SQL FAILED:", stmt);
+        throw err;
+      }
+    }
+
+    res.json({ success: true, ran: statements.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
