@@ -1,18 +1,129 @@
 -- drop statements if needed
-DROP TABLE Bonus;
-DROP TABLE Attendance;
-DROP TABLE PayrollDeductionHistory;
-DROP TABLE Payroll;
-DROP TABLE Deductions;
-DROP TABLE SalariedEmployee;
-DROP TABLE HourlyEmployee;
-DROP TABLE Employee;
-DROP TABLE Department;
-DROP TABLE JobPosition;
-DROP VIEW ActiveDeductions;
-DROP VIEW FullEmployeeProfile;
-DROP VIEW DepartmentPayrollSummary;
-DROP SEQUENCE Payroll_SEQ;
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE Bonus';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE Attendance';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE PayrollDeductionHistory';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE Payroll';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE Deductions';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE SalariedEmployee';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE HourlyEmployee';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE Employee';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE Department';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE JobPosition';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP VIEW ActiveDeductions';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP VIEW FullEmployeeProfile';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP VIEW DepartmentPayrollSummary';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -942 THEN
+            RAISE;
+        END IF;
+END;
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE Payroll_SEQ';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE != -2289 THEN
+            RAISE;
+        END IF;
+END;
 
 CREATE TABLE Department (
     DepartmentID INT PRIMARY KEY,
