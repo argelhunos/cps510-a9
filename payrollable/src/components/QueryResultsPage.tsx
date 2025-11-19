@@ -6,13 +6,7 @@ export default function QueryResultsPage() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredData = data.filter(row =>
-    Object.values(row)
-      .some(value =>
-        String(value).toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  );
+  const [selectedColumn, setSelectedColumn] = useState("");
 
   const dummyData: Record<string, any[]> = {
     "1": [
@@ -45,6 +39,9 @@ export default function QueryResultsPage() {
   useEffect(() => {
     // fake waiting for backend
     setLoading(true);
+    // clear out every single time API request is made
+    setSearchTerm("");
+    setSelectedColumn("");
 
     const timer = setTimeout(() => {
       setData(dummyData[queryId!] || []);
@@ -53,6 +50,29 @@ export default function QueryResultsPage() {
 
     return () => clearTimeout(timer);
   }, [queryId]);
+
+  // grab columns from first row of results to be able to search by col
+  const columns = data.length > 0 ? Object.keys(data[0]) : [];
+
+  // show data based on filter for search func
+  const filteredData = data.filter(row => {
+    if (!searchTerm) {
+      return true; // just give the whole thing
+    }
+
+    if (selectedColumn && row[selectedColumn] !== undefined) {
+      return String(row[selectedColumn])
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+    }
+
+    // just in case neither worked (from older ver of this func)
+    return Object.values(row).some(value => 
+      String(value)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+  })
 
   return (
     <div className="container mt-4">
@@ -69,14 +89,31 @@ export default function QueryResultsPage() {
         <p className="text-danger">No results found.</p>
       )}
 
-      <div className="mb-3">
-        <input 
-          type="text" 
-          className="form-control"
-          placeholder="Search results..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="row mb-3">
+        <div className="col-md-4 mb-2">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        <div className="col-md-4 mb-2">
+          <select
+            className="form-select"
+            value={selectedColumn}
+            onChange={(e) => setSelectedColumn(e.target.value)}
+          >
+            <option value="">All Columns</option>
+            {columns.map(col => (
+              <option key={col} value={col}>
+                {col}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {!loading && data.length > 0 && (
