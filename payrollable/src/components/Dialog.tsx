@@ -16,7 +16,7 @@ export default function Dialog({title, body, onConfirm}: DialogProps) {
             </div>
 
             <div className="modal-body">
-                <p>{body}</p>
+                {body}
             </div>
 
             <div className="modal-footer">
