@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { useNavigate } from "react-router";
 
 type DialogProps = {
     title: string;
@@ -7,6 +8,8 @@ type DialogProps = {
 }
 
 export default function Dialog({title, body, onConfirm}: DialogProps) {
+    const navigate = useNavigate();
+
     return (
         <div className="modal show" style={{ display: "block", position: "relative" }}>
         <div className="modal-dialog">
@@ -21,7 +24,7 @@ export default function Dialog({title, body, onConfirm}: DialogProps) {
 
             <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={onConfirm}>Yes</button>
-                <button className="btn btn-secondary">No</button>
+                <button className="btn btn-secondary" onClick={() => navigate('/homepage') }>No</button>
             </div>
             </div>
         </div>

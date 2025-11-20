@@ -802,7 +802,7 @@ router.post('/query', async (req, res) => {
     const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
     console.log(sql);
     
-    return res.json({ success: true, rows: result.rows });
+    return res.json({ success: true, rows: result.rows, columns: result.metaData });
 
   } catch (err) {
     console.error("QUERY ERROR:", err);
