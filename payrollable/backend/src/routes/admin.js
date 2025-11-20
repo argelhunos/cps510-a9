@@ -561,26 +561,6 @@ WHERE EXISTS (
 )
 ORDER BY e.EmployeeID`]
 
-
-router.post("/login", async (req, res) => {
-    try{
-        const { username, password } = req.body;
-        if(!username || !password) {
-            return res.status(400).json({ error: "username and password required"});
-        }
-
-        const result = await oracle.verifyCredentials(username, password);
-
-        if (!result.success) {
-            return res.status(401).json({ error: "invalid oracle credentials"});
-        }
-
-        return res.json({success: true});
-    } catch (err) {
-        return res.status(500).json({ error: "internal server error", details: err.message });
-    }
-})
-
 /**
  * POST /admin/refresh
  * Runs the refresh.sql file.
@@ -597,7 +577,6 @@ router.post('/refresh', async (req, res) => {
   try {
      conn = await oracle.getConnection(username, password);
 
-    // run statements here...
     for (const sql of statements) {
       await conn.execute(sql);
     }
@@ -619,7 +598,7 @@ router.post('/refresh', async (req, res) => {
 
 /**
  * POST /admin/drop-table
- * Body: {}
+ * Body: { username, password }
  */
 router.post('/drop-tables', async (req, res) => {
   const { username, password } = req.body;
@@ -633,7 +612,6 @@ router.post('/drop-tables', async (req, res) => {
   try {
     const conn = await oracle.getConnection(username, password);
 
-    // run statements here...
     for (const sql of statements.slice(0, 15)) {
       await conn.execute(sql);
     }
@@ -655,7 +633,7 @@ router.post('/drop-tables', async (req, res) => {
 
 /**
  * POST /admin/create-table
- * Body: {}
+ * Body: { username, password }
  */
 router.post('/create-tables', async (req, res) => {
   const { username, password } = req.body;
@@ -694,7 +672,7 @@ router.post('/create-tables', async (req, res) => {
 
 /**
  * POST /admin/populate-tables
- * Body: {}
+ * Body: { username, password }
  */
 router.post('/populate-tables', async (req, res) => {
   const { username, password } = req.body;
@@ -708,7 +686,6 @@ router.post('/populate-tables', async (req, res) => {
   try {
     conn = await oracle.getConnection(username, password);
 
-    // run statements here...
     for (const sql of statements.slice(25, 93)) {
       await conn.execute(sql);
     }
@@ -731,7 +708,7 @@ router.post('/populate-tables', async (req, res) => {
 
 /**
  * POST /admin/query
- * Body: { choice: "1" }
+ * Body: { username, password, choice: 1 }
 */
 router.post('/query', async (req, res) => {
   const { username, password, choice } = req.body;
