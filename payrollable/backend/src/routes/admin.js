@@ -636,6 +636,21 @@ const statements = [
   ORDER BY e.EmployeeID`
 ]
 
+tableViews = [
+  "SELECT * FROM Department ORDER BY DepartmentID",
+  "SELECT * FROM DepartmentManager ORDER BY ManagerID",
+  "SELECT * FROM JobPosition ORDER BY JobPositionID",
+  "SELECT * FROM Employee ORDER BY EmployeeID",
+  "SELECT * FROM HourlyEmployee ORDER BY EmployeeID",
+  "SELECT * FROM SalariedEmployee ORDER BY EmployeeID",
+  "SELECT * FROM Deductions ORDER BY EmployeeID",
+  "SELECT * FROM Payroll ORDER BY PayrollID",
+  "SELECT * FROM GrossPayCalculation ORDER BY BasePayment",
+  "SELECT * FROM Attendance ORDER BY EmployeeID",
+  "SELECT * FROM Bonus ORDER BY EmployeeID",
+  "SELECT * FROM PayrollDeductionHistory ORDER BY PayrollID"
+]
+
 /**
  * POST /admin/refresh
  * Runs the refresh.sql file.
@@ -1212,6 +1227,576 @@ router.post('/payroll-deduction-history-insert', async (req, res) => {
     console.log(sql);
     
     return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/department-update
+ * Body: { username, password, values: [2001, "Research and Development", 15] }
+*/
+router.post('/department-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `UPDATE Department SET DepartmentName = :name, NumberOfEmployees = :num WHERE DepartmentID = :id`;
+    const result = await conn.execute(sql, {
+      name: user_values[1],
+      num: Number(user_values[2]),
+      id: Number(user_values[0])
+    });
+    await conn.commit();
+    console.log(sql);
+
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/department-manager-update
+ * Body: { username, password, values: [2002, "DevOps Manager"] }
+*/
+router.post('/department-manager-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `UPDATE DepartmentManager SET DepartmentName = :name WHERE ManagerID = :id`;
+    const result = await conn.execute(sql, {
+      name: user_values[1],
+      id: Number(user_values[0])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/job-position-update
+ * Body: { username, password, values: [2003, "Programmer"] }
+*/
+router.post('/job-position-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `UPDATE JobPosition SET JobPositionTitle = :title WHERE JobPositionID = :id`;
+    const result = await conn.execute(sql, {
+      title: user_values[1],
+      id: Number(user_values[0])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/employee-update
+ * Body: { username, password, values: [2004, "Santa", "Claus", "santa.claus@gmail.com", 12, "North Pole", "Artic", "2020-05-12", "4161111111", "1990-03-15", 1, 1, "Salary", "Yes"] }
+*/
+router.post('/employee-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE Employee
+      SET FirstName = :first,
+          LastName = :last,
+          Email = :email,
+          StreetNumber = :streetNum,
+          StreetName = :streetName,
+          City = :city,
+          ArrivalDate = TO_DATE(:arrival, 'YYYY-MM-DD'),
+          PhoneNumber = :phone,
+          DateOfBirth = TO_DATE(:dob, 'YYYY-MM-DD'),
+          DepartmentID = :deptId,
+          JobPositionID = :jobId,
+          WageJobPosition = :wage,
+          IsManager = :isManager
+      WHERE EmployeeID = :id
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      first: user_values[1],
+      last: user_values[2],
+      email: user_values[3],
+      streetNum: Number(user_values[4]),
+      streetName: user_values[5],
+      city: user_values[6],
+      arrival: user_values[7],
+      phone: user_values[8],
+      dob: user_values[9],
+      deptId: Number(user_values[10]),
+      jobId: Number(user_values[11]),
+      wage: user_values[12],
+      isManager: user_values[13]
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/hourly-employee-update
+ * Body: { username, password, values: [101, 50, 80] }
+*/
+router.post('/hourly-employee-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE HourlyEmployee
+      SET HourlyRate = :rate,
+          OvertimeRate = :overtime
+      WHERE EmployeeID = :id
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      rate: Number(user_values[1]),
+      overtime: Number(user_values[2])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/salaried-employee-update
+ * Body: { username, password, values: [102, 80000] }
+*/
+router.post('/salaried-employee-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE SalariedEmployee
+      SET AnnualSalary = :salary
+      WHERE EmployeeID = :id
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      salary: Number(user_values[1])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/deductions-update
+ * Body: { username, password, values: [101, "Foreign Tax", "No", 2] }
+*/
+router.post('/deductions-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE Deductions
+      SET IsActive = :active,
+          Percentage = :percent
+      WHERE EmployeeID = :id AND DeductionType = :type
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      type: user_values[1],
+      active: user_values[2],
+      percent: Number(user_values[3])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/payroll-update
+ * Body: { username, password, values: [2005, 101, "2023-08-01", "2023-08-31", 5833.33, 0, 0.0, 5833.33] }
+*/
+router.post('/payroll-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE Payroll
+      SET EmployeeID = :empId,
+          PeriodStart = DATE :start,
+          PeriodEnd = DATE :end,
+          BasePayment = :base,
+          OvertimeHour = :hours,
+          OvertimePay = :overtime,
+          NetPayment = :net
+      WHERE PayrollID = :id
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      empId: Number(user_values[1]),
+      start: user_values[2],
+      end: user_values[3],
+      base: Number(user_values[4]),
+      hours: Number(user_values[5]),
+      overtime: Number(user_values[6]),
+      net: Number(user_values[7])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/gross-pay-calculation-update
+ * Body: { username, password, values: [5833.33, 1, 0.0, 4666.66] }
+*/
+router.post('/gross-pay-calculation-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE GrossPayCalculation
+      SET GrossPayment = :gross
+      WHERE BasePayment = :base AND OvertimeHour = :hours AND OvertimePay = :overtime
+    `;
+    const result = await conn.execute(sql, {
+      base: Number(user_values[0]),
+      hours: Number(user_values[1]),
+      overtime: Number(user_values[2]),
+      gross: Number(user_values[3])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/attendance-update
+ * Body: { username, password, values: [101, "2023-08-10", "2023-08-10 09:00:00", "2023-08-10 18:00:00", 8, 1] }
+*/
+router.post('/attendance-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE Attendance
+      SET ClockOut = TO_DATE(:clockOut,'YYYY-MM-DD HH24:MI:SS'),
+          HoursWorked = :hours,
+          OvertimeHours = :overtime
+      WHERE EmployeeID = :id AND DateWorked = TO_DATE(:date,'YYYY-MM-DD') AND ClockIn = TO_DATE(:clockIn,'YYYY-MM-DD HH24:MI:SS')
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      date: user_values[1],
+      clockIn: user_values[2],
+      clockOut: user_values[3],
+      hours: Number(user_values[4]),
+      overtime: Number(user_values[5])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/bonus-update
+ * Body: { username, password, values: [101, "Birthday", 2000, "2025-07-15"] }
+*/
+router.post('/bonus-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE Bonus
+      SET BonusType = :type,
+          Amount = :amount,
+          DateGranted = TO_DATE(:date,'YYYY-MM-DD')
+      WHERE EmployeeID = :id
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      type: user_values[1],
+      amount: Number(user_values[2]),
+      date: user_values[3]
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/payroll-deduction-history-update
+ * Body: { username, password, values: [1001, "Property Tax", 2000] }
+*/
+router.post('/payroll-deduction-history-update', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `
+      UPDATE PayrollDeductionHistory
+      SET Amount = :amount
+      WHERE PayrollID = :id AND DeductionType = :type
+    `;
+    const result = await conn.execute(sql, {
+      id: Number(user_values[0]),
+      type: user_values[1],
+      amount: Number(user_values[2])
+    });
+    await conn.commit();
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/show-table
+ * Body: { username, password, table: 1 }
+*/
+router.post('/show-table', async (req, res) => {
+  const { username, password, table } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    // START FROM 1 WHEN CHOOSING QUERY
+    const sql = tableViews[table - 1];
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows, columns: result.metaData });
 
   } catch (err) {
     console.error("QUERY ERROR:", err);

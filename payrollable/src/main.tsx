@@ -13,6 +13,7 @@ import DBActionPage from './components/DBActionPage.tsx';
 import SimpleQueryPage from './components/SimpleQueryPage.tsx';
 import QueryResultsPage from './components/QueryResultsPage.tsx';
 import AdvancedQueryPage from './components/AdvancedQueryPage.tsx';
+import UpdateTablePage from './components/UpdateTablePage.tsx';
 import TableInsertionPage from './components/TableInsertionPage.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -40,6 +41,10 @@ createRoot(document.getElementById('root')!).render(
             <Route 
               path="advanced" 
               element={<AdvancedQueryPage />}
+            />
+            <Route 
+              path="update" 
+              element={<UpdateTablePage />}
             />
             <Route 
               path="inserts" 

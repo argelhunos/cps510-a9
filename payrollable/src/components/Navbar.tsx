@@ -26,6 +26,9 @@ export default function Navbar() {
                     <Link className="nav-link" to="/homepage/advanced">Advanced Query Tables</Link>
                 </li>
                 <li className="nav-item">
+                    <Link className="nav-link" to="/homepage/update">Update Table</Link>
+                </li>
+                <li className="nav-item">
                     <Link className="nav-link" to="/homepage/inserts">Table Insertions</Link>
                 </li>
                 {/* <li className="nav-item">

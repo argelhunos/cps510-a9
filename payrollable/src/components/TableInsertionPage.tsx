@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 
+// Function to send insert request to the server
 async function sendInsert(endpoint: string, values: any[]) {
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
@@ -19,6 +20,7 @@ async function sendInsert(endpoint: string, values: any[]) {
     alert("Success!");
 }
 
+// Main component for table insertions
 export default function TableInsertionPage() {
 
     // Track which table the user picked
@@ -106,6 +108,7 @@ export default function TableInsertionPage() {
     );
 }
 
+// Individual form components for each table
 function DepartmentForm() {
     const vals = useRef(["", "", ""]);
     
