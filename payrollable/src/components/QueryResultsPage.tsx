@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useAuth } from "../context/AuthContext"
 
 export default function QueryResultsPage() {
   const { queryId } = useParams();
   const { user } = useAuth();
+  const location = useLocation();
+  const queryTitle = location.state?.title;
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -69,11 +71,15 @@ export default function QueryResultsPage() {
     <div className="container mt-4">
 
       <h1 className="mb-4">
-        Results for query: <span className="text-primary">{queryId}</span>
+        Results for query: <span className="text-primary">{queryTitle}</span>
       </h1>
 
       {loading && (
-        <p className="text-muted">Loading data...</p>
+        <div className="d-flex justify-content-center my-4">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
       )}
 
       {!loading && data.length === 0 && (

@@ -317,7 +317,8 @@ const statements = [
   //5
   `--List department names and the number of employees from each department (Department Table)
   SELECT DepartmentName, 'employee count is: ', NumberOfEmployees  
-  FROM Department`,
+  FROM Department
+  ORDER BY NumberOfEmployees DESC`,
 
   //6
   `--Get the average grosspay for each period (Payroll Table)

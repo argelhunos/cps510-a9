@@ -18,15 +18,19 @@ function getActionInfo(action: string | undefined): ActionInfo | null {
           <div>
             <p>This action will drop:</p>
             <ul>
-              <li>Department</li>
-              <li>JobPosition</li>
-              <li>Employee</li>
-              <li>HourlyEmployee</li>
-              <li>SalariedEmployee</li>
-              <li>Payroll</li>
-              <li>PayrollDeductionHistory</li>
-              <li>Attendance</li>
               <li>Bonus</li>
+              <li>Attendance</li>
+              <li>PayrollDeductionHistory</li>
+              <li>Payroll</li>
+              <li>GrossPayCalculation</li>
+              <li>Deductions</li>
+              <li>SalariedEmployee</li>
+              <li>HourlyEmployee</li>
+              <li>Employee</li>
+              <li>Department</li>
+              <li>DepartmentManager</li>
+              <li>JobPosition</li>
+              <li>ActiveDeductions</li>
             </ul>
           </div>
         ),
@@ -40,15 +44,19 @@ function getActionInfo(action: string | undefined): ActionInfo | null {
           <div>
             <p>This action will create:</p>
             <ul>
-              <li>Department</li>
-              <li>JobPosition</li>
-              <li>Employee</li>
-              <li>HourlyEmployee</li>
-              <li>SalariedEmployee</li>
-              <li>Payroll</li>
-              <li>PayrollDeductionHistory</li>
-              <li>Attendance</li>
               <li>Bonus</li>
+              <li>Attendance</li>
+              <li>PayrollDeductionHistory</li>
+              <li>Payroll</li>
+              <li>GrossPayCalculation</li>
+              <li>Deductions</li>
+              <li>SalariedEmployee</li>
+              <li>HourlyEmployee</li>
+              <li>Employee</li>
+              <li>Department</li>
+              <li>DepartmentManager</li>
+              <li>JobPosition</li>
+              <li>ActiveDeductions</li>
             </ul>
           </div>
         ),
