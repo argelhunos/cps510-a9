@@ -727,7 +727,7 @@ router.post('/query', async (req, res) => {
     if (!sql) return res.status(400).json({ error: "invalid query choice" });
     const result = await conn.execute(sql);
     
-    return res.json({ success: true, rows: result.rows });
+    return res.json({ success: true, rows: result.rows, columns: result.metaData });
 
   } catch (err) {
     console.error("QUERY ERROR:", err);

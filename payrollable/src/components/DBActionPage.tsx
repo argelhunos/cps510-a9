@@ -1,3 +1,4 @@
+import { useAuth } from "../context/AuthContext";
 import { useParams } from "react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import Dialog from "./Dialog";
@@ -29,7 +30,7 @@ function getActionInfo(action: string | undefined): ActionInfo | null {
             </ul>
           </div>
         ),
-        endpoint: "insertendpoint",
+        endpoint: "localhost:3000/admin/drop-tables",
       };
 
     case "create":
@@ -51,14 +52,14 @@ function getActionInfo(action: string | undefined): ActionInfo | null {
             </ul>
           </div>
         ),
-        endpoint: "insertendpoint",
+        endpoint: "localhost:3000/admin/create-tables",
       };
 
     case "populate":
       return {
         title: "Populate Database",
         body: "This will insert sample data into your tables. Continue?",
-        endpoint: "insertendpoint",
+        endpoint: "localhost:3000/admin/populate-tables",
       };
 
     default:
@@ -68,6 +69,7 @@ function getActionInfo(action: string | undefined): ActionInfo | null {
 
 export default function DBActionPage() {
   const { action } = useParams();
+  const { user } = useAuth();
   const actionInfo = getActionInfo(action);
   const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -84,14 +86,39 @@ export default function DBActionPage() {
     try {
       setLoading(true);
 
-      // const res = await fetch(actionInfo!.endpoint, { method: "POST" });
-      // const json = await res.json();
+      const currUsername = user?.username;
+      const currPassword = user?.password;
 
-      // setResult(JSON.stringify(json, null, 2));
+      const res = await fetch(`http://${actionInfo!.endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: currUsername, password: currPassword })
+      });
 
+      const json = await res.json();
 
-      // to mimic waiting for endpoint
-      setResult("Completed successfully.");
+      if (!res.ok) {
+        setResult(json.error || "Server error occurred.");
+        return;
+      }
+
+      let message = "";
+      switch (action) {
+        case "drop":
+          message = "Dropped tables successfully.";
+          break;
+        case "create":
+          message = "Created tables successfully.";
+          break;
+        case "populate":
+          message = "Populated tables successfully.";
+          break;
+        default:
+          message = "Action completed successfully.";
+      }
+
+      setResult(message);
+
     } catch (err) {
       setResult("Error contacting server.");
     } finally {
@@ -101,8 +128,19 @@ export default function DBActionPage() {
 
   return (
     <div className="container mt-4">
-      {result == null && <Dialog title={actionInfo.title} body={actionInfo.body} onConfirm={handleConfirm}/>}
-      {result != null && <p>{result}</p>}
+      {loading && (
+        <div className="d-flex justify-content-center my-4">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+      {result == null && !loading && 
+        <Dialog title={actionInfo.title} body={actionInfo.body} onConfirm={handleConfirm}/>
+      }
+      {result != null && !loading && 
+        <p>{result}</p>
+      }
     </div>
   );
 }

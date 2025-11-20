@@ -1,54 +1,45 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useAuth } from "../context/AuthContext"
 
 export default function QueryResultsPage() {
   const { queryId } = useParams();
+  const { user } = useAuth();
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("");
 
-  const dummyData: Record<string, any[]> = {
-    "1": [
-      { DeductionType: "Tax" },
-      { DeductionType: "Insurance" },
-      { DeductionType: "Retirement" },
-    ],
-    "2": [
-      {
-        EmployeeID: 101,
-        FirstName: "Alice",
-        LastName: "Smith",
-        Email: "alice.smith@example.com",
-        HourlyRate: 25
-      },
-      {
-        EmployeeID: 102,
-        FirstName: "Bob",
-        LastName: "Jones",
-        Email: "bob.jones@example.com",
-        HourlyRate: 30
-      }
-    ],
-    "3": [
-      { EmployeeID: 201, FirstName: "Carol", LastName: "Miller", IsManager: "Yes" },
-      { EmployeeID: 202, FirstName: "David", LastName: "Lee", IsManager: "Yes" }
-    ]
-  };
 
   useEffect(() => {
-    // fake waiting for backend
-    setLoading(true);
-    // clear out every single time API request is made
-    setSearchTerm("");
-    setSelectedColumn("");
+    async function fetchData() {
+      setLoading(true);
 
-    const timer = setTimeout(() => {
-      setData(dummyData[queryId!] || []);
-      setLoading(false);
-    }, 500);
+      const currUser = user?.username;
+      const currPassword = user?.password;
 
-    return () => clearTimeout(timer);
+      try {
+        const res = await fetch("http://localhost:3000/admin/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({username: currUser, password: currPassword, queryId, choice: Number(queryId)})
+        })
+
+        const json = await res.json();
+
+        if (!json.success) {
+          setData([]);
+        }
+
+        setData(json.rows);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
   }, [queryId]);
 
   // grab columns from first row of results to be able to search by col
