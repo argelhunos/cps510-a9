@@ -7,6 +7,12 @@ type AccordionItemProps = {
   defaultOpen?: boolean; // optional: open by default
 };
 
+// Accordion UI Component that takes in:
+// - id
+// - title
+// - children (react children nodes)
+// - defaultOpen (on first render, choose if accordion is open)
+
 export default function AccordionItem({
   id,
   title,

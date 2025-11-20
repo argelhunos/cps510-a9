@@ -2,6 +2,8 @@ import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
+// Login page to verify the login credentials into TMU Oracle 12c.
+
 export default function Login() {
     const { login } = useAuth();
     const navigate = useNavigate();

@@ -1,6 +1,10 @@
 import React, { createContext, useState, useContext } from "react";
 import { login as apiLogin } from "../api/auth"
 
+// React Context provider to pass over the user object of the current authenticated user
+// throughout the whole web app, so each component is able to 
+// create authenticated web requests to the backend for data retrieval.
+
 type User = {
   username: string;
   password: string;
@@ -31,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }} >
+    <AuthContext.Provider value={{ user, login, logout }} > {/* each react component will get the credentials of the authenticated user, functions to login and logout*/}
       {children}
     </AuthContext.Provider>
   );

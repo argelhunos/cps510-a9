@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router"
 import AccordionItem from "./AccordionItem"
 
-// possible would want to put the text of the queries inside somewhere else to clean this up
+// Simple Query Page to list out each query for the user to run.
+// Each Accordion Item shows the corresponding SQL and provides a Run button that navigates to
+// a new page where the query will be ran and displayed. (QueryResultsPage)
 
 export default function SimpleQueryPage() {
     const navigate = useNavigate();

@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import { useAuth } from "../context/AuthContext"
 
+// QueryResultsPage to show the results of the simple and advanced queries.
+// Displays results within a bootstrap table.
+// Allows users to search results by all columns or by a specific column.
+
 export default function QueryResultsPage() {
-  const { queryId } = useParams();
+  const { queryId } = useParams();             // queryId taken from the URL, determined through the route Simple/AdvancedQueryPage sends the user to
   const { user } = useAuth();
-  const location = useLocation();
-  const queryTitle = location.state?.title;
+  const location = useLocation();              // location needed to grab state that is passed over which includes the title of the query
+  const queryTitle = location.state?.title;    
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,9 +18,11 @@ export default function QueryResultsPage() {
 
 
   useEffect(() => {
+    // grab data from the database by querying the endpoint, specific query # gotten from URL
     async function fetchData() {
       setLoading(true);
-
+      
+      // get username and password from react context
       const currUser = user?.username;
       const currPassword = user?.password;
 

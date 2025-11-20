@@ -9,6 +9,11 @@ type ActionInfo = {
   endpoint: string;
 };
 
+// getActionInfo takes in action (drop, create, populate)
+// from the parameter in the URL.
+// returns the text to be displayed in the UI along with the
+// corresponding backend endpoint to that action.
+
 function getActionInfo(action: string | undefined): ActionInfo | null {
   switch (action) {
     case "drop":
@@ -82,6 +87,8 @@ export default function DBActionPage() {
   const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+
+  // when switching actions, need to reset result so dialog is shown again
   useEffect(() => {
     setResult(null);
   }, [action])
@@ -89,6 +96,9 @@ export default function DBActionPage() {
   if (!actionInfo) {
     return <h2>Invalid action: {action}</h2>;
   }
+
+  // handleConfirm calls the API endpoint for the given action,
+  // and sets the result message accordingly, for both success and failure.
 
   async function handleConfirm() {
     try {
