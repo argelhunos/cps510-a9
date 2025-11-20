@@ -13,6 +13,7 @@ import DBActionPage from './components/DBActionPage.tsx';
 import SimpleQueryPage from './components/SimpleQueryPage.tsx';
 import QueryResultsPage from './components/QueryResultsPage.tsx';
 import AdvancedQueryPage from './components/AdvancedQueryPage.tsx';
+import TableInsertionPage from './components/TableInsertionPage.tsx';
 
 // Root of the web application. Defines the routes of the web application.
 
@@ -44,6 +45,10 @@ createRoot(document.getElementById('root')!).render(
             <Route 
               path="advanced" 
               element={<AdvancedQueryPage />}
+            />
+            <Route 
+              path="inserts" 
+              element={<TableInsertionPage />}
             />
             <Route 
               path="query/:queryId"

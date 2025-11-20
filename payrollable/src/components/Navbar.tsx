@@ -35,6 +35,12 @@ export default function Navbar() {
                 <li className="nav-item">
                     <Link className="nav-link" to="/homepage/advanced">Advanced Query Tables</Link>
                 </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/homepage/inserts">Table Insertions</Link>
+                </li>
+                {/* <li className="nav-item">
+                    <a className="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li> */}
             </ul>
             <button 
                 className="btn btn-outline-success"
