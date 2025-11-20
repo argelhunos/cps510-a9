@@ -15,6 +15,8 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ error: "invalid oracle credentials"});
         }
 
+        req.session.oracleUser = { username, password };
+
         return res.json({success: true});
     } catch (err) {
         return res.status(500).json({ error: "internal server error", details: err.message });
