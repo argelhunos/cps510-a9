@@ -635,10 +635,6 @@ const statements = [
   ORDER BY e.EmployeeID`
 ]
 
-const insertStatements = [
-  
-]
-
 /**
  * POST /admin/refresh
  * Runs the refresh.sql file.
@@ -802,6 +798,414 @@ router.post('/query', async (req, res) => {
 
     // START FROM 1 WHEN CHOSING QUERY
     const sql = statements[statements.length - 28 + choice];
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/department-insert
+ * Body: { username, password, values: [2001, "Research and Development", 15] }
+*/
+router.post('/department-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO Department (DepartmentID, DepartmentName, NumberOfEmployees) VALUES (${user_values[0]}, '${user_values[1]}', ${user_values[2]})`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/department-manager-insert
+ * Body: { username, password, values: [2002, "DevOps Manager"] }
+*/
+router.post('/department-manager-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO DepartmentManager (ManagerID, DepartmentName) VALUES (${user_values[0]}, '${user_values[1]}')`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/job-position-insert
+ * Body: { username, password, values: [2003, "Programmer"] }
+*/
+router.post('/job-position-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO JobPosition (JobPositionID, JobPositionTitle) VALUES (${user_values[0]}, '${user_values[1]}')`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/employee-insert
+ * Body: { username, password, values: [2004, "Santa", "Claus", "santa.claus@gmail.com", 12, "North Pole", "Artic", "2020-05-12", "4161111111", "1990-03-15", 1, 1, "Salary", "Yes"] }
+*/
+router.post('/employee-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager)  VALUES (${user_values[0]}, '${user_values[1]}', '${user_values[2]}', '${user_values[3]}', ${user_values[4]}, '${user_values[5]}', '${user_values[6]}', TO_DATE('${user_values[7]}','YYYY-MM-DD'), '${user_values[8]}', TO_DATE('${user_values[9]}','YYYY-MM-DD'), ${user_values[10]}, ${user_values[11]}, '${user_values[12]}', '${user_values[13]}')`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/hourly-employee-insert
+ * Body: { username, password, values: [101, 50, 80] }
+*/
+router.post('/hourly-employee-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO HourlyEmployee (EmployeeID, HourlyRate, OvertimeRate) VALUES (${user_values[0]}, ${user_values[1]}, ${user_values[2]})`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/salaried-employee-insert
+ * Body: { username, password, values: [102, 80000] }
+*/
+router.post('/salaried-employee-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO SalariedEmployee (EmployeeID, AnnualSalary) VALUES (${user_values[0]}, ${user_values[1]})`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/deductions-insert
+ * Body: { username, password, values: [101, "Foreign Tax", "No", 2] }
+*/
+router.post('/deductions-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO Deductions (EmployeeID, DeductionType, IsActive, Percentage) VALUES (${user_values[0]}, '${user_values[1]}', '${user_values[2]}', ${user_values[3]})`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/payroll-insert
+ * Body: { username, password, values: [2005, 101, "2023-08-01", "2023-08-31", 5833.33, 0, 0.0, 5833.33] }
+*/
+router.post('/payroll-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO Payroll (PayrollID, EmployeeID, PeriodStart, PeriodEnd, BasePayment, OvertimeHour, OvertimePay, NetPayment) VALUES (${user_values[0]}, ${user_values[1]}, DATE '${user_values[2]}', DATE '${user_values[3]}', ${user_values[4]}, ${user_values[5]}, ${user_values[6]}, ${user_values[7]})`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/gross-pay-calculation-insert
+ * Body: { username, password, values: [5833.33, 1, 0.0, 4666.66] }
+*/
+router.post('/gross-pay-calculation-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO GrossPayCalculation (BasePayment, OvertimeHour, OvertimePay, GrossPayment) VALUES (${user_values[0]}, ${user_values[1]}, ${user_values[2]}, ${user_values[3]})`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/attendance-insert
+ * Body: { username, password, values: [101, "2023-08-10", "2023-08-10 09:00:00", "2023-08-10 18:00:00", 8, 1] }
+*/
+router.post('/attendance-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO Attendance (EmployeeID, DateWorked, ClockIn, ClockOut, HoursWorked, OvertimeHours) VALUES (${user_values[0]}, TO_DATE('${user_values[1]}','YYYY-MM-DD'), TO_DATE('${user_values[2]}','YYYY-MM-DD HH24:MI:SS'), TO_DATE('${user_values[3]}','YYYY-MM-DD HH24:MI:SS'), ${user_values[4]}, ${user_values[5]})`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/bonus-insert
+ * Body: { username, password, values: [101, "Birthday", 2000, "2025-07-15"] }
+*/
+router.post('/bonus-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (${user_values[0]}, '${user_values[1]}', ${user_values[2]}, TO_DATE('${user_values[3]}','YYYY-MM-DD'))`;
+    if (!sql) return res.status(400).json({ error: "invalid query choice" });
+    const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    console.log(sql);
+    
+    return res.json({ success: true, rows: result.rows });
+
+  } catch (err) {
+    console.error("QUERY ERROR:", err);
+    return res.status(500).json({ error: err.message });
+
+  } finally {
+    if (conn) {
+      try { await conn.close(); } catch (e) {}
+    }
+  }
+});
+
+/**
+ * POST /admin/payroll-deduction-history-insert
+ * Body: { username, password, values: [1001, "Property Tax", 2000] }
+*/
+router.post('/payroll-deduction-history-insert', async (req, res) => {
+  const { username, password, user_values } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "username and password required" });
+  }
+
+  let conn;
+
+  try {
+    conn = await oracle.getConnection(username, password);
+
+    const sql = `INSERT INTO PayrollDeductionHistory (PayrollID, DeductionType, Amount) VALUES (${user_values[0]}, '${user_values[1]}', ${user_values[2]})`;
     if (!sql) return res.status(400).json({ error: "invalid query choice" });
     const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
     console.log(sql);
