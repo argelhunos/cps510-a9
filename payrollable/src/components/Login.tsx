@@ -2,6 +2,8 @@ import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
+// Login page to verify the login credentials into TMU Oracle 12c.
+
 export default function Login() {
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -12,7 +14,7 @@ export default function Login() {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
         try {
-            await login(username, password); // save the credentials in the context
+            await login(username, password); // save the credentials in the context (see AuthContext)
             navigate("/homepage"); 
         } catch (error) {
             console.error(error);

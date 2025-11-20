@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router";
 import AccordionItem from "./AccordionItem";
 
+// Advanced Query Page to list out each query for the user to run.
+// Each Accordion Item shows the corresponding SQL and provides a Run button that navigates to
+// a new page where the query will be ran and displayed. (QueryResultsPage)
+
 export default function AdvancedQueryPage() {
     const navigate = useNavigate();
 
@@ -46,8 +50,9 @@ JOIN JobPosition jp ON e.JobPositionID = jp.JobPositionID
 JOIN SalariedEmployee s ON e.EmployeeID = s.EmployeeID
 ORDER BY s.AnnualSalary DESC`}
                         </pre>
+                        {/* note: navigate route IDs don't fully line up with displayed query number to user to be in line with backend */}
                         <button 
-                            className="btn btn-primary mt-2" 
+                            className="btn btn-primary mt-2"
                             onClick={() => navigate('/homepage/query/15', { state: { title: "Top highest paid salaried employees with their department and job title" }})}>
                                 Run
                         </button>

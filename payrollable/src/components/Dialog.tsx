@@ -7,6 +7,11 @@ type DialogProps = {
     onConfirm: () => void;
 }
 
+// Dialog UI component that takes in a title, body, and a function to run when the
+// Yes button is pressed.
+// Defaults to navigating back to the homepage when No button is pressed.
+// Dialog is used in DBActionPage.tsx
+
 export default function Dialog({title, body, onConfirm}: DialogProps) {
     const navigate = useNavigate();
 

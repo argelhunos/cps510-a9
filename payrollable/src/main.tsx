@@ -14,12 +14,16 @@ import SimpleQueryPage from './components/SimpleQueryPage.tsx';
 import QueryResultsPage from './components/QueryResultsPage.tsx';
 import AdvancedQueryPage from './components/AdvancedQueryPage.tsx';
 
+// Root of the web application. Defines the routes of the web application.
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    {/* Wraps the entire app with AuthProvider so all components can access user auth state */}
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />}/>
+          {/* /homepage and its child routes are protected. user must be authenticated */}
           <Route 
             path="/homepage"
             element={
@@ -28,6 +32,7 @@ createRoot(document.getElementById('root')!).render(
               </PrivateRoute>
             }
           >
+            {/* Nested routes under /homepage */}
             <Route 
               path="db/:action" 
               element={<DBActionPage />}
