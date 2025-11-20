@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import App from './App.tsx'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,6 +24,8 @@ createRoot(document.getElementById('root')!).render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          {/* redirects user to /login */}
           <Route path="/login" element={<Login />}/>
           {/* /homepage and its child routes are protected. user must be authenticated */}
           <Route 
