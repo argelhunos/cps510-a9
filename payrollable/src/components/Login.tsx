@@ -13,6 +13,8 @@ export default function Login() {
         event.preventDefault()
         try {
             await login(username, password); // save the credentials in the context
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
             navigate("/homepage"); 
         } catch (error) {
             console.error(error);
