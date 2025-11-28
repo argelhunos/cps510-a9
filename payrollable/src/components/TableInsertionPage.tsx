@@ -41,15 +41,7 @@ export default function TableInsertionPage() {
                     <option value="Department">Department</option>
                     <option value="Department Manager">Department Manager</option>
                     <option value="Job Position">Job Position</option>
-                    <option value="Employee">Employee</option>
-                    <option value="Hourly Employee">Hourly Employee</option>
-                    <option value="Salaried Employee">Salaried Employee</option>
-                    <option value="Deductions">Deductions</option>
-                    <option value="Payroll">Payroll</option>
                     <option value="Gross Pay Calculation">Gross Pay Calculation</option>
-                    <option value="Attendance">Attendance</option>
-                    <option value="Bonus">Bonus</option>
-                    <option value="Payroll Deduction History">Payroll Deduction History</option>
 
                 </select>
             </div>

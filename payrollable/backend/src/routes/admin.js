@@ -153,22 +153,22 @@ const statements = [
   `INSERT INTO JobPosition (JobPositionID, JobPositionTitle) VALUES (5, 'Intern')`,
 
   `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager) 
-  VALUES (101, 'Alice', 'Brown', 'alice.brown@company.com', 12, 'Maple Street', 'Toronto', TO_DATE('2020-05-12','YYYY-MM-DD'), '4161111111', TO_DATE('1990-03-15','YYYY-MM-DD'), 1, 1, 'Salary', 'Yes')`,
+  VALUES (101, 'Alice', 'Brown', 'alice.brown@company.com', 12, 'Maple Street', 'Toronto', TO_DATE('2020-05-12','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), '4161111111', TO_DATE('1990-03-15','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), 1, 1, 'Salary', 'Yes')`,
 
   `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager) 
-  VALUES (102, 'Bob', 'Smith', 'bob.smith@company.com', 34, 'Oak Avenue', 'Toronto', TO_DATE('2021-03-01','YYYY-MM-DD'), '4162222222', TO_DATE('1995-06-20','YYYY-MM-DD'), 2, 2, 'Hourly', 'No')`,
+  VALUES (102, 'Bob', 'Smith', 'bob.smith@company.com', 34, 'Oak Avenue', 'Toronto', TO_DATE('2021-03-01','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), '4162222222', TO_DATE('1995-06-20','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), 2, 2, 'Hourly', 'No')`,
 
   `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager) 
-  VALUES (103, 'Charlie', 'Davis', 'charlie.davis@company.com', 56, 'Pine Road', 'Toronto', TO_DATE('2022-07-10','YYYY-MM-DD'), '4163333333', TO_DATE('1992-11-05','YYYY-MM-DD'), 2, 3, 'Salary', 'Yes')`,
+  VALUES (103, 'Charlie', 'Davis', 'charlie.davis@company.com', 56, 'Pine Road', 'Toronto', TO_DATE('2022-07-10','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), '4163333333', TO_DATE('1992-11-05','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), 2, 3, 'Salary', 'Yes')`,
 
   `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager) 
-  VALUES (104, 'Diana', 'Lopez', 'diana.lopez@company.com', 78, 'Birch Blvd', 'Toronto', TO_DATE('2021-09-15','YYYY-MM-DD'), '4164444444', TO_DATE('1998-01-12','YYYY-MM-DD'), 2, 5, 'Hourly', 'No')`,
+  VALUES (104, 'Diana', 'Lopez', 'diana.lopez@company.com', 78, 'Birch Blvd', 'Toronto', TO_DATE('2021-09-15','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), '4164444444', TO_DATE('1998-01-12','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), 2, 5, 'Hourly', 'No')`,
 
   `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager) 
-  VALUES (105, 'Edward', 'Clark', 'edward.clark@company.com', 90, 'Cedar Lane', 'Toronto', TO_DATE('2019-02-25','YYYY-MM-DD'), '4165555555', TO_DATE('1987-08-23','YYYY-MM-DD'), 3, 4, 'Salary', 'Yes')`,
+  VALUES (105, 'Edward', 'Clark', 'edward.clark@company.com', 90, 'Cedar Lane', 'Toronto', TO_DATE('2019-02-25','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), '4165555555', TO_DATE('1987-08-23','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), 3, 4, 'Salary', 'Yes')`,
 
   `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager) 
-  VALUES (106, 'Fiona', 'Wong', 'fiona.wong@company.com', 23, 'Elm Street', 'Toronto', TO_DATE('2023-04-05','YYYY-MM-DD'), '4166666666', TO_DATE('2000-12-02','YYYY-MM-DD'), 1, 5, 'Hourly', 'No')`,
+  VALUES (106, 'Fiona', 'Wong', 'fiona.wong@company.com', 23, 'Elm Street', 'Toronto', TO_DATE('2023-04-05','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), '4166666666', TO_DATE('2000-12-02','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), 1, 5, 'Hourly', 'No')`,
 
   `INSERT INTO HourlyEmployee (EmployeeID, HourlyRate, OvertimeRate) VALUES (102, 40, 60)`,
   `INSERT INTO HourlyEmployee (EmployeeID, HourlyRate, OvertimeRate) VALUES (104, 20, 30)`,
@@ -228,17 +228,17 @@ const statements = [
   `INSERT INTO GrossPayCalculation (BasePayment, OvertimeHour, OvertimePay, GrossPayment) VALUES (2880, 8, 216, 2724.48)`,
 
   `INSERT INTO Attendance (EmployeeID, DateWorked, ClockIn, ClockOut, HoursWorked, OvertimeHours) 
-  VALUES (102, TO_DATE('2023-08-10','YYYY-MM-DD'), TO_DATE('2023-08-10 09:00:00','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-08-10 18:00:00','YYYY-MM-DD HH24:MI:SS'), 8, 1)`,
+  VALUES (102, TO_DATE('2023-08-10','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), TO_DATE('2023-08-10 09:00:00','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-08-10 18:00:00','YYYY-MM-DD HH24:MI:SS'), 8, 1)`,
 
   `INSERT INTO Attendance (EmployeeID, DateWorked, ClockIn, ClockOut, HoursWorked, OvertimeHours) 
-  VALUES (104, TO_DATE('2023-08-10','YYYY-MM-DD'), TO_DATE('2023-08-10 09:30:00','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-08-10 17:30:00','YYYY-MM-DD HH24:MI:SS'), 7, 0)`,
+  VALUES (104, TO_DATE('2023-08-10','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), TO_DATE('2023-08-10 09:30:00','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-08-10 17:30:00','YYYY-MM-DD HH24:MI:SS'), 7, 0)`,
 
   `INSERT INTO Attendance (EmployeeID, DateWorked, ClockIn, ClockOut, HoursWorked, OvertimeHours) 
-  VALUES (106, TO_DATE('2023-08-10','YYYY-MM-DD'), TO_DATE('2023-08-10 10:00:00','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-08-10 19:00:00','YYYY-MM-DD HH24:MI:SS'), 8, 1)`,
+  VALUES (106, TO_DATE('2023-08-10','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), TO_DATE('2023-08-10 10:00:00','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-08-10 19:00:00','YYYY-MM-DD HH24:MI:SS'), 8, 1)`,
 
-  `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (101, 'Performance', 2000, TO_DATE('2023-07-15','YYYY-MM-DD'))`,
-  `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (103, 'Retention', 3000, TO_DATE('2023-06-20','YYYY-MM-DD'))`,
-  `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (105, 'Holiday', 1000, TO_DATE('2022-12-25','YYYY-MM-DD'))`,
+  `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (101, 'Performance', 2000, TO_DATE('2023-07-15','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'))`,
+  `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (103, 'Retention', 3000, TO_DATE('2023-06-20','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'))`,
+  `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (105, 'Holiday', 1000, TO_DATE('2022-12-25','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'))`,
 
   `INSERT INTO PayrollDeductionHistory (PayrollID, DeductionType, Amount) VALUES (1001, 'Income Tax', 5000 * 0.20)`,
   `INSERT INTO PayrollDeductionHistory (PayrollID, DeductionType, Amount) VALUES (1001, 'Health Insurance', 200)`,
@@ -380,8 +380,8 @@ const statements = [
   SELECT
     Payroll_SEQ.NEXTVAL AS PayrollID,
     e.EmployeeID,
-    TO_DATE('2025-09-29', 'YYYY-MM-DD') AS PeriodStart,
-      TO_DATE('2025-10-06', 'YYYY-MM-DD') AS PeriodEnd,
+    TO_DATE('2025-09-29', 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"') AS PeriodStart,
+      TO_DATE('2025-10-06', 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"') AS PeriodEnd,
       s.AnnualSalary / 26 AS BasePayment,
       0 AS OvertimeHour,
       0.0 AS OvertimePay,
@@ -403,7 +403,7 @@ const statements = [
   FROM GrossPayCalculation g
   JOIN Payroll p ON g.BasePayment = p.BasePayment AND g.OvertimeHour = p.OvertimeHour AND g.OvertimePay = p.OvertimePay
   JOIN Deductions d ON p.EmployeeID = d.EmployeeID
-  WHERE p.PeriodEnd = TO_DATE('2025-10-06', 'YYYY-MM-DD')
+  WHERE p.PeriodEnd = TO_DATE('2025-10-06', 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"')
   AND d.IsActive = 'Yes'`,
 
   //14 --Updating Query
@@ -421,7 +421,7 @@ const statements = [
         AND g.OvertimeHour = p.OvertimeHour
         AND g.OvertimePay = p.OvertimePay
   )
-  WHERE p.PeriodEnd = TO_DATE('2025-10-06', 'YYYY-MM-DD')`,
+  WHERE p.PeriodEnd = TO_DATE('2025-10-06', 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"')`,
 
   //15
   `-- Top highest paid salaried employees with their department and job title
@@ -949,7 +949,7 @@ router.post('/employee-insert', async (req, res) => {
   try {
     conn = await oracle.getConnection(username, password);
 
-    const sql = `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager)  VALUES (${user_values[0]}, '${user_values[1]}', '${user_values[2]}', '${user_values[3]}', ${user_values[4]}, '${user_values[5]}', '${user_values[6]}', TO_DATE('${user_values[7]}','YYYY-MM-DD'), '${user_values[8]}', TO_DATE('${user_values[9]}','YYYY-MM-DD'), ${user_values[10]}, ${user_values[11]}, '${user_values[12]}', '${user_values[13]}')`;
+    const sql = `INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, StreetNumber, StreetName, City, ArrivalDate, PhoneNumber, DateOfBirth, DepartmentID, JobPositionID, WageJobPosition, IsManager)  VALUES (${user_values[0]}, '${user_values[1]}', '${user_values[2]}', '${user_values[3]}', ${user_values[4]}, '${user_values[5]}', '${user_values[6]}', TO_DATE('${user_values[7]}','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), '${user_values[8]}', TO_DATE('${user_values[9]}','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), ${user_values[10]}, ${user_values[11]}, '${user_values[12]}', '${user_values[13]}')`;
     if (!sql) return res.status(400).json({ error: "invalid query choice" });
     const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
     console.log(sql);
@@ -1153,7 +1153,7 @@ router.post('/attendance-insert', async (req, res) => {
   try {
     conn = await oracle.getConnection(username, password);
 
-    const sql = `INSERT INTO Attendance (EmployeeID, DateWorked, ClockIn, ClockOut, HoursWorked, OvertimeHours) VALUES (${user_values[0]}, TO_DATE('${user_values[1]}','YYYY-MM-DD'), TO_DATE('${user_values[2]}','YYYY-MM-DD HH24:MI:SS'), TO_DATE('${user_values[3]}','YYYY-MM-DD HH24:MI:SS'), ${user_values[4]}, ${user_values[5]})`;
+    const sql = `INSERT INTO Attendance (EmployeeID, DateWorked, ClockIn, ClockOut, HoursWorked, OvertimeHours) VALUES (${user_values[0]}, TO_DATE('${user_values[1]}','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'), TO_DATE('${user_values[2]}','YYYY-MM-DD HH24:MI:SS'), TO_DATE('${user_values[3]}','YYYY-MM-DD HH24:MI:SS'), ${user_values[4]}, ${user_values[5]})`;
     if (!sql) return res.status(400).json({ error: "invalid query choice" });
     const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
     console.log(sql);
@@ -1187,7 +1187,7 @@ router.post('/bonus-insert', async (req, res) => {
   try {
     conn = await oracle.getConnection(username, password);
 
-    const sql = `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (${user_values[0]}, '${user_values[1]}', ${user_values[2]}, TO_DATE('${user_values[3]}','YYYY-MM-DD'))`;
+    const sql = `INSERT INTO Bonus (EmployeeID, BonusType, Amount, DateGranted) VALUES (${user_values[0]}, '${user_values[1]}', ${user_values[2]}, TO_DATE('${user_values[3]}','YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'))`;
     if (!sql) return res.status(400).json({ error: "invalid query choice" });
     const result = await conn.execute(sql, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
     console.log(sql);
@@ -1375,9 +1375,9 @@ router.post('/employee-update', async (req, res) => {
           StreetNumber = :streetNum,
           StreetName = :streetName,
           City = :city,
-          ArrivalDate = TO_DATE(:arrival, 'YYYY-MM-DD'),
+          ArrivalDate = TO_TIMESTAMP(:arrival, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'),
           PhoneNumber = :phone,
-          DateOfBirth = TO_DATE(:dob, 'YYYY-MM-DD'),
+          DateOfBirth = TO_TIMESTAMP(:dob, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'),
           DepartmentID = :deptId,
           JobPositionID = :jobId,
           WageJobPosition = :wage,
@@ -1563,8 +1563,8 @@ router.post('/payroll-update', async (req, res) => {
     const sql = `
       UPDATE Payroll
       SET EmployeeID = :empId,
-          PeriodStart = DATE :start,
-          PeriodEnd = DATE :end,
+          PeriodStart = TO_TIMESTAMP(:startDate, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'),
+          PeriodEnd = TO_TIMESTAMP(:endDate, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'),
           BasePayment = :base,
           OvertimeHour = :hours,
           OvertimePay = :overtime,
@@ -1574,8 +1574,8 @@ router.post('/payroll-update', async (req, res) => {
     const result = await conn.execute(sql, {
       id: Number(user_values[0]),
       empId: Number(user_values[1]),
-      start: user_values[2],
-      end: user_values[3],
+      startDate: user_values[2],
+      endDate: user_values[3],
       base: Number(user_values[4]),
       hours: Number(user_values[5]),
       overtime: Number(user_values[6]),
@@ -1658,14 +1658,13 @@ router.post('/attendance-update', async (req, res) => {
 
     const sql = `
       UPDATE Attendance
-      SET ClockOut = TO_DATE(:clockOut,'YYYY-MM-DD HH24:MI:SS'),
-          HoursWorked = :hours,
+      SET HoursWorked = :hours,
           OvertimeHours = :overtime
-      WHERE EmployeeID = :id AND DateWorked = TO_DATE(:date,'YYYY-MM-DD') AND ClockIn = TO_DATE(:clockIn,'YYYY-MM-DD HH24:MI:SS')
+      WHERE EmployeeID = :id AND DateWorked = TO_TIMESTAMP:dateVal, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"') AND ClockIn = TO_TIMESTAMP:clockIn,'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"')
     `;
     const result = await conn.execute(sql, {
       id: Number(user_values[0]),
-      date: user_values[1],
+      dateVal: user_values[1],
       clockIn: user_values[2],
       clockOut: user_values[3],
       hours: Number(user_values[4]),
@@ -1707,14 +1706,14 @@ router.post('/bonus-update', async (req, res) => {
       UPDATE Bonus
       SET BonusType = :type,
           Amount = :amount,
-          DateGranted = TO_DATE(:date,'YYYY-MM-DD')
+          DateGranted = TO_TIMESTAMP(:dateVal, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"')
       WHERE EmployeeID = :id
     `;
     const result = await conn.execute(sql, {
       id: Number(user_values[0]),
       type: user_values[1],
       amount: Number(user_values[2]),
-      date: user_values[3]
+      dateVal: user_values[3]
     });
     await conn.commit();
     console.log(sql);

@@ -31,7 +31,7 @@ export default function UpdateTablePage() {
         "Department Manager": 2,
         "Job Position": 3,
         "Employee": 4,
-        "Hourly-employee": 5,
+        "Hourly Employee": 5,
         "Salaried Employee": 6,
         "Deductions": 7,
         "Payroll": 8,
@@ -98,7 +98,7 @@ export default function UpdateTablePage() {
                     <UpdateableTable
                         rows={tableData.rows}
                         columns={tableData.columns}
-                        endpoint={selectedTable.replace(" ", "-").toLowerCase().concat("-update")}
+                        endpoint={selectedTable.replaceAll(" ", "-").toLowerCase().concat("-update")}
                         setRows={(newRows) => setTableData({ ...tableData, rows: newRows })}
                     />
                 )}
