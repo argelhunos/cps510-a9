@@ -1658,9 +1658,10 @@ router.post('/attendance-update', async (req, res) => {
 
     const sql = `
       UPDATE Attendance
-      SET HoursWorked = :hours,
+      SET ClockOut = TO_TIMESTAMP(:clockOut,'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'),
+          HoursWorked = :hours,
           OvertimeHours = :overtime
-      WHERE EmployeeID = :id AND DateWorked = TO_TIMESTAMP:dateVal, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"') AND ClockIn = TO_TIMESTAMP:clockIn,'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"')
+      WHERE EmployeeID = :id AND DateWorked = TO_TIMESTAMP(:dateVal, 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"') AND ClockIn = TO_TIMESTAMP(:clockIn,'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"')
     `;
     const result = await conn.execute(sql, {
       id: Number(user_values[0]),
